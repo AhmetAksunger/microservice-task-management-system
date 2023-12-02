@@ -5,6 +5,7 @@ import com.taskmanagement.userservice.service.UserService;
 import org.hibernate.validator.constraints.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ public class UserController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
+    @Value("${user.service.count}")
+    private Integer count;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -36,5 +40,10 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable @UUID String id) {
         logger.info("Get User By Id Endpoint");
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/users/count")
+    public ResponseEntity<Integer> getCount() {
+        return ResponseEntity.ok(count);
     }
 }
