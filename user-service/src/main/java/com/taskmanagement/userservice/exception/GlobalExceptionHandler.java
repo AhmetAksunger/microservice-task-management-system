@@ -17,4 +17,14 @@ public class GlobalExceptionHandler {
                 status
         );
     }
+
+    @ExceptionHandler(UserServiceAlreadyException.class)
+    public ResponseEntity<ErrorResponse> handle(UserServiceAlreadyException exception, HttpServletRequest request) {
+        var status = UserServiceAlreadyException.STATUS;
+        ErrorResponse errorResponse = new ErrorResponse(status.value(), status.getReasonPhrase(), exception.getMessage(), System.currentTimeMillis(), request.getRequestURI());
+        return new ResponseEntity<>(
+                errorResponse,
+                status
+        );
+    }
 }
