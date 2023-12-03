@@ -15,6 +15,19 @@ spring:
       discovery:
         locator:
           enabled: true
+    config:
+      enabled: false
+    vault:
+      enabled: true
+      uri: ${VAULT_URI}
+      authentication: token
+      token: ${VAULT_TOKEN}
+      kv:
+        enabled: true
+        backend: gateway
+        default-context: dev
+  config:
+    import: optional:vault://
 
 server:
   port: 8888
@@ -23,7 +36,7 @@ eureka:
   client:
     register-with-eureka: true
     service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${eureka_uri}
   instance:
     prefer-ip-address: true
 
@@ -36,3 +49,5 @@ management:
     enabled: true
     sampling:
       probability: 1.0
+
+
