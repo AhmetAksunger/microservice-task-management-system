@@ -12,6 +12,10 @@ spring:
           uri: lb://task-service
           predicates:
             - Path=/api/v1/tasks/**
+        - id: identity-service
+          uri: lb://identity-service
+          predicates:
+            - Path=/api/v1/auth/**
       discovery:
         locator:
           enabled: true
