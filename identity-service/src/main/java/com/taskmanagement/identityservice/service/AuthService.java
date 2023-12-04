@@ -3,6 +3,7 @@ package com.taskmanagement.identityservice.service;
 import com.taskmanagement.identityservice.dto.UserSaveRequest;
 import com.taskmanagement.identityservice.dto.UserTokenRequest;
 import com.taskmanagement.identityservice.dto.UserTokenResponse;
+import com.taskmanagement.identityservice.dto.UserValidateTokenResponse;
 
 public interface AuthService {
 
@@ -10,5 +11,5 @@ public interface AuthService {
 
     UserTokenResponse generateToken(UserTokenRequest request);
 
-    void validateToken(String jwt);
+    UserValidateTokenResponse validateAndExtractClaims(String jwt);
 }

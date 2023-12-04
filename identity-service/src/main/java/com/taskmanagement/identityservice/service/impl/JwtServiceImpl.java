@@ -1,6 +1,8 @@
 package com.taskmanagement.identityservice.service.impl;
 
+import com.taskmanagement.identityservice.exception.UnauthorizedException;
 import com.taskmanagement.identityservice.service.JwtService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -22,8 +24,16 @@ public class JwtServiceImpl implements JwtService {
     private String secretKey;
 
     @Override
-    public void validateToken(final String jwt) {
-        Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(jwt);
+    public Claims validateAndExtractClaims(final String jwt) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+        } catch (Exception e) {
+            throw new UnauthorizedException();
+        }
     }
 
     @Override

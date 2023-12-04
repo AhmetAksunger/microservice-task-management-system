@@ -4,11 +4,14 @@ import com.taskmanagement.identityservice.client.UserServiceClient;
 import com.taskmanagement.identityservice.dto.UserSaveRequest;
 import com.taskmanagement.identityservice.dto.UserTokenRequest;
 import com.taskmanagement.identityservice.dto.UserTokenResponse;
+import com.taskmanagement.identityservice.dto.UserValidateTokenResponse;
 import com.taskmanagement.identityservice.exception.UnauthorizedException;
+import com.taskmanagement.identityservice.exception.UserAlreadyExistsByEmailException;
 import com.taskmanagement.identityservice.model.UserCredential;
 import com.taskmanagement.identityservice.repository.UserCredentialRepository;
 import com.taskmanagement.identityservice.service.AuthService;
 import com.taskmanagement.identityservice.service.JwtService;
+import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     public UserTokenResponse register(UserSaveRequest userSaveRequest) {
 
         if (userCredentialRepository.existsByEmail(userSaveRequest.getEmail())) {
-            throw new UnauthorizedException();
+            throw new UserAlreadyExistsByEmailException("User already exists by email: " + userSaveRequest.getEmail());
         }
 
         final String encodedPassword = passwordEncoder.encode(userSaveRequest.getPassword());
@@ -62,7 +65,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void validateToken(String jwt) {
-        jwtService.validateToken(jwt);
+    public UserValidateTokenResponse validateAndExtractClaims(String jwt) {
+
+        Claims claims = jwtService.validateAndExtractClaims(jwt);
+
+        return new UserValidateTokenResponse(claims);
     }
 }

@@ -3,6 +3,7 @@ package com.taskmanagement.identityservice.controller;
 import com.taskmanagement.identityservice.dto.UserSaveRequest;
 import com.taskmanagement.identityservice.dto.UserTokenRequest;
 import com.taskmanagement.identityservice.dto.UserTokenResponse;
+import com.taskmanagement.identityservice.dto.UserValidateTokenResponse;
 import com.taskmanagement.identityservice.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +32,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.generateToken(request));
     }
 
-    @PostMapping("/token/validate/{token}")
-    public ResponseEntity<Void> validateToken(@PathVariable String token){
-        authService.validateToken(token);
-        return ResponseEntity.ok().build();
+    @PostMapping("/extract/claims/{token}")
+    public ResponseEntity<UserValidateTokenResponse> validateToken(@PathVariable String token) {
+        return ResponseEntity.ok(authService.validateAndExtractClaims(token));
     }
 }

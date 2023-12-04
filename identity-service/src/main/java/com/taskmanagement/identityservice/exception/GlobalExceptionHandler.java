@@ -17,4 +17,14 @@ public class GlobalExceptionHandler {
                 status
         );
     }
+
+    @ExceptionHandler(UserAlreadyExistsByEmailException.class)
+    public ResponseEntity<ErrorResponse> handle(UserAlreadyExistsByEmailException exception, HttpServletRequest request) {
+        var status = UserAlreadyExistsByEmailException.STATUS;
+        ErrorResponse errorResponse = new ErrorResponse(status.value(), status.getReasonPhrase(), exception.getMessage(), System.currentTimeMillis(), request.getRequestURI());
+        return new ResponseEntity<>(
+                errorResponse,
+                status
+        );
+    }
 }
