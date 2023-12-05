@@ -11,11 +11,15 @@ import java.security.Key;
 @Component
 public class JwtUtil {
 
-    @Value("${secret.key}")
+    @Value("${secret.jwt.key}")
     private String secretKey;
 
     public void validateToken(String jwt) {
         Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(jwt);
+    }
+
+    public String extractEmail(String jwt) {
+        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(jwt).getBody().getSubject();
     }
 
     private Key getSignKey() {

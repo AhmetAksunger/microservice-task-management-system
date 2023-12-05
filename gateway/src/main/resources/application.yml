@@ -67,4 +67,7 @@ management:
 
 #Jwt
 secret:
-  key: ${jwt_secret_key}
+  jwt:
+    key: ${jwt_secret_key}
+  gateway:
+    key: ${gateway_secret_key}
