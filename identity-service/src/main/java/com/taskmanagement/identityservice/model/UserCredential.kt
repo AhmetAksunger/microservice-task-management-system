@@ -13,6 +13,7 @@ data class UserCredential @JvmOverloads constructor(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = "",
     val email: String,
+    val role: Role? = Role.ROLE_USER,
     private val password: String
 
 ) : UserDetails {
@@ -20,12 +21,12 @@ data class UserCredential @JvmOverloads constructor(
         val claims = HashMap<String, Any>()
         claims[UserClaims.USER_ID.value] = this.id ?: ""
         claims[UserClaims.EMAIL.value] = this.email
-
+        claims[UserClaims.ROLE.value] = this.role ?: Role.ROLE_USER
         return claims
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return listOf(SimpleGrantedAuthority("ROLE_USER")).toMutableList()
+        return listOf(SimpleGrantedAuthority(role?.name)).toMutableList()
     }
 
     override fun getPassword(): String {
