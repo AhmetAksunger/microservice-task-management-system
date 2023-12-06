@@ -30,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void createTask(CreateTaskRequest request) {
-        Task task = new Task(request.getTitle(), request.getDescription());
+        Task task = new Task(request.getTitle(), request.getDescription(), request.getPriority());
         taskRepository.save(task);
     }
 
