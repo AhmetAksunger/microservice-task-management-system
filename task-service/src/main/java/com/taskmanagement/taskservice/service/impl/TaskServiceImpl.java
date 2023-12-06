@@ -36,7 +36,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto getTaskById(String taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task could not found by id: " + taskId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
         return new TaskDto(
                 task.getId(),
                 task.getTitle(),
@@ -81,7 +81,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto assignUsersToTask(AssignUsersToTaskRequest request) {
         Task task = taskRepository.findById(request.getTaskId())
-                .orElseThrow(() -> new TaskNotFoundException("Task could not found by id: " + request.getTaskId()));
+                .orElseThrow(() -> new TaskNotFoundException(request.getTaskId()));
 
         List<String> commonUserIds = request.getUserIds()
                 .stream()
@@ -114,5 +114,14 @@ public class TaskServiceImpl implements TaskService {
                 task.getCompleted(),
                 Stream.concat(userDtosToBeAssigned.stream(), previouslyAssignedUserDtos.stream()).toList()
         );
+    }
+
+    @Override
+    public void completeTask(String taskId) {
+
+        Task task = taskRepository.findById(taskId).orElseThrow
+                (() -> new TaskNotFoundException(taskId));
+
+        taskRepository.save(task.complete());
     }
 }

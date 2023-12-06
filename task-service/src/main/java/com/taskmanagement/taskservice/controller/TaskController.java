@@ -5,9 +5,6 @@ import com.taskmanagement.taskservice.dto.CreateTaskRequest;
 import com.taskmanagement.taskservice.dto.TaskDto;
 import com.taskmanagement.taskservice.service.TaskService;
 import org.hibernate.validator.constraints.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,19 +21,14 @@ import java.util.List;
 @Validated
 public class TaskController {
 
-    private final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskService taskService;
-    private final Environment environment;
 
-    public TaskController(TaskService taskService, Environment environment) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.environment = environment;
     }
 
     @PostMapping("/tasks")
     public ResponseEntity<Void> createTask(@RequestBody CreateTaskRequest request) {
-
-        logger.info("Server port is : {}", environment.getProperty("local.server.port"));
 
         taskService.createTask(request);
         return ResponseEntity.ok().build();
@@ -60,5 +52,11 @@ public class TaskController {
     @PostMapping("/tasks/assign")
     public ResponseEntity<TaskDto> assignUsersToTask(@RequestBody AssignUsersToTaskRequest request) {
         return ResponseEntity.ok(taskService.assignUsersToTask(request));
+    }
+
+    @PostMapping("/tasks/complete/{taskId}")
+    public ResponseEntity<Void> completeTask(@PathVariable @UUID String taskId) {
+        taskService.completeTask(taskId);
+        return ResponseEntity.ok().build();
     }
 }

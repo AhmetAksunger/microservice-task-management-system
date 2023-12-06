@@ -17,4 +17,6 @@ public interface TaskService {
     List<TaskDto> getAllUnassignedTasks();
 
     TaskDto assignUsersToTask(AssignUsersToTaskRequest request);
+
+    void completeTask(String taskId);
 }

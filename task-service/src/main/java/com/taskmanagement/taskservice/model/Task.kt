@@ -20,4 +20,5 @@ data class Task @JvmOverloads constructor(
     @ElementCollection
     val assignedUserIds: List<String>? = ArrayList()
 ) {
+    fun complete() = copy(completed = true)
 }
