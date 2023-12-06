@@ -27,6 +27,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/extract/claims/**").permitAll()
                         .anyRequest().authenticated()
                 ).build();
     }

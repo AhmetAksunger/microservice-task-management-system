@@ -26,7 +26,7 @@ data class UserCredential @JvmOverloads constructor(
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return listOf(SimpleGrantedAuthority(role?.name)).toMutableList()
+        return listOf(SimpleGrantedAuthority("ROLE_${role?.name ?: "USER"}")).toMutableList()
     }
 
     override fun getPassword(): String {
