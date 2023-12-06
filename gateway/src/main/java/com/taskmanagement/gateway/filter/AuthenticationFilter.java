@@ -1,8 +1,6 @@
 package com.taskmanagement.gateway.filter;
 
-import com.taskmanagement.gateway.enums.Header;
 import com.taskmanagement.gateway.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +20,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     private final RouteValidator routeValidator;
     private final JwtUtil jwtUtil;
-
-    @Value("${secret.gateway.key}")
-    private String gatewaySecretKey;
 
     public AuthenticationFilter(RouteValidator routeValidator, JwtUtil jwtUtil) {
         super(Config.class);
@@ -56,8 +51,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     jwtUtil.validateToken(jwtToken);
 
                     request = exchange.getRequest().mutate()
-                            .header(Header.GATEWAY_TOKEN.value(), gatewaySecretKey)
-                            .header(Header.USER_EMAIL.value(), jwtUtil.extractEmail(jwtToken))
                             .build();
                 } catch (Exception e) {
                     return onError(exchange);
