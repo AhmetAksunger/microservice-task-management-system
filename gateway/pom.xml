@@ -6,31 +6,38 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.taskmanagement</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Gateway for Task Management</description>
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.0-RC1</spring-cloud.version>
     </properties>
     <dependencies>
+        <!-- GATEWAY -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
+        <!-- GATEWAY -->
+
+        <!-- EUREKA -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <!-- EUREKA -->
 
+        <!-- ACTUATOR -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!-- ACTUATOR -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +45,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Zipkin -->
+        <!-- ZIPKIN -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-brave</artifactId>
@@ -47,7 +54,9 @@
             <groupId>io.zipkin.reporter2</groupId>
             <artifactId>zipkin-reporter-brave</artifactId>
         </dependency>
+        <!-- ZIPKIN -->
 
+        <!-- SPRING CLOUD CONFIG & VAULT -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -57,6 +66,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-vault-config</artifactId>
         </dependency>
+        <!-- SPRING CLOUD CONFIG & VAULT -->
 
         <!--JWT -->
         <dependency>
@@ -74,7 +84,7 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.5</version>
         </dependency>
-
+        <!--JWT -->
     </dependencies>
     <dependencyManagement>
         <dependencies>
