@@ -41,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getCompleted(),
+                task.isCompleted(),
                 Objects.requireNonNull(task.getAssignedUserIds())
                         .stream()
                         .map(userServiceClient::getUserById)
@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
                         task.getId(),
                         task.getTitle(),
                         task.getDescription(),
-                        task.getCompleted(),
+                        task.isCompleted(),
                         Objects.requireNonNull(task.getAssignedUserIds())
                                 .stream()
                                 .map(userServiceClient::getUserById)
@@ -73,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
                         task.getId(),
                         task.getTitle(),
                         task.getDescription(),
-                        task.getCompleted())
+                        task.isCompleted())
                 )
                 .toList();
     }
@@ -111,7 +111,7 @@ public class TaskServiceImpl implements TaskService {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
-                task.getCompleted(),
+                task.isCompleted(),
                 Stream.concat(userDtosToBeAssigned.stream(), previouslyAssignedUserDtos.stream()).toList()
         );
     }
@@ -121,7 +121,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = taskRepository.findById(taskId).orElseThrow
                 (() -> new TaskNotFoundException(taskId));
-
-        taskRepository.save(task.complete());
+        task.complete();
+        taskRepository.save(task);
     }
 }
