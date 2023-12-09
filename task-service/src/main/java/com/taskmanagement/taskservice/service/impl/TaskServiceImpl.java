@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -42,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
                 task.getTitle(),
                 task.getDescription(),
                 task.isCompleted(),
-                Objects.requireNonNull(task.getAssignedUserIds())
+                task.getAssigneeIds()
                         .stream()
                         .map(userServiceClient::getUserById)
                         .map(ResponseEntity::getBody)
@@ -58,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
                         task.getTitle(),
                         task.getDescription(),
                         task.isCompleted(),
-                        Objects.requireNonNull(task.getAssignedUserIds())
+                        task.getAssigneeIds()
                                 .stream()
                                 .map(userServiceClient::getUserById)
                                 .map(ResponseEntity::getBody).toList()
@@ -85,7 +84,7 @@ public class TaskServiceImpl implements TaskService {
 
         List<String> commonUserIds = request.getUserIds()
                 .stream()
-                .filter(Objects.requireNonNull(task.getAssignedUserIds())::contains)
+                .filter(task.getAssigneeIds()::contains)
                 .toList();
 
         if (!commonUserIds.isEmpty()) {
@@ -98,13 +97,13 @@ public class TaskServiceImpl implements TaskService {
                 .map(ResponseEntity::getBody)
                 .toList();
 
-        List<UserDto> previouslyAssignedUserDtos = Objects.requireNonNull(task.getAssignedUserIds())
+        List<UserDto> previouslyAssignedUserDtos = task.getAssigneeIds()
                 .stream()
                 .map(userServiceClient::getUserById)
                 .map(ResponseEntity::getBody)
                 .toList();
 
-        task.getAssignedUserIds().addAll(request.getUserIds());
+        task.getAssigneeIds().addAll(request.getUserIds());
         taskRepository.save(task);
 
         return new TaskDto(

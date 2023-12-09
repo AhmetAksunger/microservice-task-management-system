@@ -28,7 +28,7 @@ public class Task {
     @Enumerated(value = EnumType.STRING)
     private Priority priority;
     @ElementCollection
-    private List<String> assignedUserIds;
+    private List<String> assigneeIds;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -78,8 +78,8 @@ public class Task {
         return priority;
     }
 
-    public List<String> getAssignedUserIds() {
-        return assignedUserIds;
+    public List<String> getAssigneeIds() {
+        return assigneeIds;
     }
 
     public LocalDateTime getCreatedAt() {
